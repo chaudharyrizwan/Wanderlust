@@ -1,0 +1,133 @@
+<% layout("/layouts/boilerplate") %>
+<script>
+  const mapToken = "<%= process.env.MAP_TOKEN %>";
+  const listing = JSON.parse('<%- JSON.stringify(listing) %>');
+  // console.log(listing);
+</script>
+<div class="container mt-4">
+  <div class="row">
+    <!-- LEFT COLUMN -->
+    <div class="col-md-8">
+
+      <!-- Listing Card -->
+      <div class="card show-card listing-card mb-3">
+        <img src="<%= listing.image.url %>" class="card-img-top show-img" alt="listing_image">
+        <div class="card-body">
+          <h3><%= listing.title %></h3>
+          <p class="card-text">Owned by <i><%= listing.owner.username %></i></p>
+          <p class="card-text"><%= listing.description %></p>
+          <p class="card-text"><%= listing.location %>, <%= listing.country %></p>
+        </div>
+      </div>
+
+      <!-- Edit/Delete Buttons -->
+      <% if (currUser && listing.owner && listing.owner._id && listing.owner._id.equals(currUser._id)) { %>
+        <div class="mb-4 d-flex gap-3">
+          <a href="/listings/<%= listing._id %>/edit" class="btn btn-dark col-1 offset-3 edit-btn">Edit</a>
+          <form method="post" action="/listings/<%= listing._id %>?_method=DELETE">
+            <button class="btn btn-dark offset-5">Delete</button>
+          </form>
+        </div>
+      <% } %>
+      
+      <!-- Leave a Review -->
+      <% if (currUser) { %>
+        <hr>
+        <h4>Leave a Review</h4>
+        <form action="/listings/<%= listing.id %>/reviews" method="post" novalidate class="needs-validation mb-4">
+          <div class="mb-3 mt-3">
+            <label for="rating" class="form-label">Rating</label>
+            <fieldset class="starability-slot">
+              <% for (let i = 1; i <= 5; i++) { %>
+                <input type="radio" id="first-rate<%= i %>" name="review[rating]" value="<%= i %>">
+                <label for="first-rate<%= i %>"><%= i %> star</label>
+              <% } %>
+            </fieldset>
+          </div>
+
+          <div class="mb-3 mt-3">
+            <label for="comment" class="form-label">Comments</label>
+            <textarea name="review[comment]" id="comment" cols="30" rows="5" class="form-control" required></textarea>
+            <div class="invalid-feedback">Please add some comments for review</div>
+          </div>
+          <button class="btn btn-outline-dark">Submit</button>
+        </form>
+      <% } %>
+
+      <!-- All Reviews -->
+      <% if(listing.reviews.length > 0) { %>
+        <hr>
+        <h4>All Reviews</h4>
+        <div class="row">
+          <% for(let review of listing.reviews) { %>
+            <div class="card col-5 ms-3 mb-3">
+              <div class="card-body">
+                <h5 class="card-title">@<%= review.author.username %></h5>
+                <p class="starability-result card-text" data-rating="<%= review.rating %>"></p>
+                <p class="card-text"><%= review.comment %></p>
+                <form method="post" action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE">
+                  <button class="btn btn-sm btn-dark">Delete</button>
+                </form><br>
+              </div>
+            </div>
+          <% } %>
+        </div>
+      <% } %>
+
+      <!-- Map -->
+      <hr>
+      <h4>Where you'll be</h4>
+      <div id="map" style="height: 300px;"></div><br>
+
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="col-md-4">
+      <div id="booking-card" class="card shadow-sm p-3">
+        <h4>₹<%= listing.price.toLocaleString("en-IN") %> / night</h4>
+        <form action="/listings/<%= listing._id %>/book" method="POST" id="bookingForm">
+          <div class="row mb-2">
+            <div class="col">
+              <label>Check-in</label>
+              <input type="date" id="checkIn" name="checkIn" class="form-control" required>
+            </div>
+            <div class="col">
+              <label>Check-out</label>
+              <input type="date" id="checkOut" name="checkOut" class="form-control" required>
+            </div>
+          </div>
+        
+          <div class="mb-2">
+            <label>Guests</label>
+            <select name="guests" class="form-select" required>
+              <option value="1">1 guest</option>
+              <option value="2">2 guests</option>
+              <option value="3">3 guests</option>
+            </select>
+          </div>
+        
+          <hr>
+          <p class="fw-bold fs-5 mb-1">
+            ₹<span id="totalPrice" data-price="<%= listing.price %>"><%= listing.price %></span> total
+          </p>
+          <small class="text-muted">
+            Includes ₹<span id="gstAmount">0</span> GST
+          </small>          
+        
+          <% if (currUser) { %>
+            <button type="submit" class="btn btn-danger w-100 mt-3">Reserve</button>
+            <p class="text-center small text-muted mt-2">You won't be charged yet</p>
+          <% } else { %>
+            <a href="/login" class="btn btn-danger w-100 mt-3">Log in to Reserve</a>
+            <p class="text-center small text-muted mt-2">You must log in to reserve</p>
+          <% } %>          
+        </form>        
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/js/map.js"></script>
+<!-- <script src="/js/script.js"></script> -->
+    
+
