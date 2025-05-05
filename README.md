@@ -49,7 +49,7 @@ SESSION_SECRET=your_session_secret
 npm start
 ```
 
-Visit: `http://localhost:3000`
+Visit: `http://localhost:8080`
 
 ---
 
@@ -92,6 +92,8 @@ Wanderlust/
 ## 📸 Screenshot
 ![image](https://github.com/user-attachments/assets/cf9a04b2-5e67-4e1e-bff2-826c969f4d6f)
 ![image](https://github.com/user-attachments/assets/b9e2fa6f-c08a-4d04-ac99-6d7dbf97973b)
+![image](https://github.com/user-attachments/assets/1cb76d94-a954-43df-a2cd-9de769886adb)
+
 
 
 ---
