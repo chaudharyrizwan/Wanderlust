@@ -52,10 +52,6 @@ const sessionOptions = {
     },
 };
 
-// app.get("/",(req,res)=>{
-//     res.send("Hii, I am root");
-// });
-
 app.use(session(sessionOptions));
 app.use(flash());
 
@@ -73,21 +69,12 @@ app.use((req,res,next)=>{
     next();
 });
 
-// app.get("/demouser",async(req,res)=>{
-//     let fakeUser = new User({
-//         email:"student@gmail.com",
-//         username:"delta-student",
-//     });
-//     let registerUser = await User.register(fakeUser,"helloworld");
-//     res.send(registerUser);
-// });
-
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
 app.use("/",userRouter);
 app.use('/', searchRouter);
 app.use("/listings", bookingRouter);
-
+app.use("/bookings", bookingRouter);
 
 app.all("*",(req,res,next)=>{
     next(new ExpressError(404,"Page Not Found!"));
@@ -96,10 +83,8 @@ app.all("*",(req,res,next)=>{
 app.use((err,req,res,next)=>{
     let {statusCode=500,message="Something went wrong!!"} = err;
     res.status(statusCode).render("err.ejs",{message});
-    //res.status(statusCode).send(message);
 });
   
-
 app.listen(8080,()=>{
     console.log("server is listening to port 8080");
 });

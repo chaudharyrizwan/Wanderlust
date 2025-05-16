@@ -4,6 +4,12 @@ const Booking = require('../models/booking');
 const Listing = require('../models/listing');
 const { isLoggedIn } = require('../middleware');
 
+// Show all bookings for the logged-in user
+router.get('/my-bookings', isLoggedIn, async (req, res) => {
+  const bookings = await Booking.find({ user: req.user._id }).populate('listing');
+  res.render('listings/myBookings', { bookings });
+});
+
 router.post('/:id/book', isLoggedIn, async (req, res) => {
   const listing = await Listing.findById(req.params.id);
   const { checkIn, checkOut, guests } = req.body;
@@ -29,5 +35,6 @@ router.post('/:id/book', isLoggedIn, async (req, res) => {
   req.flash("success", "Your booking was successful!");
   res.redirect(`/listings/${listing._id}`);
 });
+
 
 module.exports = router;
