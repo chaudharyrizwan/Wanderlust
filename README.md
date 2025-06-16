@@ -5,6 +5,12 @@ Users can explore stays, book rooms, leave reviews, and manage listings.
 
 ---
 
+## 🌍 Live Demo
+
+Explore WanderLust here: [https://wanderlust-n9fy.onrender.com/listings](https://wanderlust-n9fy.onrender.com/listings)
+
+---
+
 ## 🚀 Features
 
 * 🏠 Add and explore travel listings by category (Mountains, Cities, Camping, etc.)
