@@ -122,5 +122,10 @@ Wanderlust/
 🔗 GitHub: [chaudharyrizwan](https://github.com/chaudharyrizwan)
 
 ---
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE) © 2025 chaudharyrizwan.
+
+---
 
 > Made with ❤️ for Web Development and learning.
